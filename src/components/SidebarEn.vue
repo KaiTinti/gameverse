@@ -1,32 +1,32 @@
 <template>
   <div class="sidebar">
-    <h2>Filtros</h2>
+    <h2>Filters</h2>
 
-    <!-- Filtro por Nome -->
+    <!-- Filter by Name -->
     <div class="filter-section">
-      <h3>Nome</h3>
+      <h3>Name</h3>
       <form class="form-search" role="form" @submit.prevent="search">
         <input
           type="search"
           class="nav-search-field"
-          placeholder="Pesquise seu jogo favorito..."
+          placeholder="Search your favorite game..."
           v-model="searchQuery"
         />
       </form>
     </div>
 
-    <!-- Filtro por Gênero -->
+    <!-- Filter by Genre -->
     <div class="filter-section">
-      <h3>Gênero</h3>
+      <h3>Genre</h3>
       <label class="checkbox-label">
         <input type="checkbox" v-model="filters.genre.action">
         <span class="checkbox-custom"></span>
-        Ação
+        Action
       </label>
       <label class="checkbox-label">
         <input type="checkbox" v-model="filters.genre.adventure">
         <span class="checkbox-custom"></span>
-        Aventura
+        Adventure
       </label>
       <label class="checkbox-label">
         <input type="checkbox" v-model="filters.genre.rpg">
@@ -36,82 +36,82 @@
       <label class="checkbox-label">
         <input type="checkbox" v-model="filters.genre.strategy">
         <span class="checkbox-custom"></span>
-        Estratégia
+        Strategy
       </label>
       <label class="checkbox-label">
         <input type="checkbox" v-model="filters.genre.horror">
         <span class="checkbox-custom"></span>
-        Terror
+        Horror
       </label>
     </div>
 
-    <!-- Filtro por Preço -->
+    <!-- Filter by Price -->
     <div class="filter-section">
-      <h3>Preço</h3>
+      <h3>Price</h3>
       <label class="radio-label">
         <input type="radio" v-model="filters.price" value="all">
         <span class="radio-custom"></span>
-        Todos
+        All
       </label>
       <label class="radio-label">
         <input type="radio" v-model="filters.price" value="0-50">
         <span class="radio-custom"></span>
-        R$0 - R$50
+        $0 - $50
       </label>
       <label class="radio-label">
         <input type="radio" v-model="filters.price" value="50-100">
         <span class="radio-custom"></span>
-        R$50 - R$100
+        $50 - $100
       </label>
       <label class="radio-label">
         <input type="radio" v-model="filters.price" value="100-200">
         <span class="radio-custom"></span>
-        R$100 - R$200
+        $100 - $200
       </label>
       <label class="radio-label">
         <input type="radio" v-model="filters.price" value="200">
         <span class="radio-custom"></span>
-        Acima de R$200
+        Above $200
       </label>
     </div>
 
-    <!-- Filtro por Classificação -->
+    <!-- Filter by Rating -->
     <div class="filter-section">
-      <h3>Classificação</h3>
+      <h3>Rating</h3>
       <label class="radio-label">
         <input type="radio" v-model="filters.rating" value="all">
         <span class="radio-custom"></span>
-        Todos
+        All
       </label>
       <label class="radio-label">
         <input type="radio" v-model="filters.rating" value="4">
         <span class="radio-custom"></span>
-        4 estrelas ou mais
+        4 stars or more
       </label>
       <label class="radio-label">
         <input type="radio" v-model="filters.rating" value="3">
         <span class="radio-custom"></span>
-        3 estrelas ou mais
+        3 stars or more
       </label>
       <label class="radio-label">
         <input type="radio" v-model="filters.rating" value="2">
         <span class="radio-custom"></span>
-        2 estrelas ou mais
+        2 stars or more
       </label>
       <label class="radio-label">
         <input type="radio" v-model="filters.rating" value="1">
         <span class="radio-custom"></span>
-        1 estrela ou mais
+        1 star or more
       </label>
     </div>
 
-    <button @click="applyFilters">Aplicar Filtros</button>
+    <button @click="applyFilters">Apply Filters</button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'SideVue',
+  name: 'SideEnVue',
   data() {
     return {
       searchQuery: '',
