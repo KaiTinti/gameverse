@@ -36,17 +36,29 @@
                       <div class="cart-items">
                         <div v-for="(item, index) in cart" :key="index" class="cart-item"
                           :class="{ 'cart-item-added': item.added }">
-                          <div>{{ item.title }} - R$ {{ item.price }}</div>
-                          <div class="item-actions">
-                            <button @click="decreaseQuantity(index)" class="btn-quantity">-</button>
-                            <span>{{ item.quantity }}</span>
-                            <button @click="increaseQuantity(index)" class="btn-quantity">+</button>
-                            <button @click="removeFromCart(index)" class="btn-remove">Remover</button>
+                          <div class="cart-item-content">
+                            <img :src="item.image" alt="Item Image" class="cart-item-image">
+                            <div class="cart-item-details">
+                              <div class="titulo">{{ item.title }}</div>
+                              <div class="linha"></div>
+                              <div class="preco">R$ {{ item.price }}</div>
+                              <div class="item-actions">
+                                <button @click="decreaseQuantity(index)" class="btn-quantity">-</button>
+                                <span>{{ item.quantity }}</span>
+                                <button @click="increaseQuantity(index)" class="btn-quantity">+</button>
+                                <button @click="removeFromCart(index)" class="btn-remove">Remover</button>
+                              </div>
+                            </div>
                           </div>
                         </div>
                         <div v-if="cart.length === 0" class="empty-cart">Seu carrinho está vazio!</div>
                         <div v-if="cart.length > 0" class="cart-total">
-                          Total: R$ {{ cartTotal() }}
+                          <div class="linha"></div>
+                          Total: R$ {{ cartTotal }}
+                          <router-link :to="{ name: 'dados', query: { cart: JSON.stringify(cart) } }">
+                            <button class="btn-buy">Concluir Pagamento</button>
+                          </router-link>
+
                         </div>
                       </div>
                     </div>
@@ -64,6 +76,7 @@
 
 <script>
 import LojaVue from './Loja.vue';
+import { mapState, mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'MenuVue',
@@ -72,51 +85,26 @@ export default {
   },
   data() {
     return {
-      cart: [],
       searchQuery: ''
     };
   },
+  computed: {
+    ...mapState(['cart']),
+    ...mapGetters(['cartTotal'])
+  },
   methods: {
+    ...mapMutations(['ADD_TO_CART', 'REMOVE_FROM_CART', 'INCREASE_QUANTITY', 'DECREASE_QUANTITY']),
     addToCart(item) {
-      const existingItem = this.cart.find(cartItem => cartItem.title === item.title);
-      if (existingItem) {
-        existingItem.quantity++;
-        existingItem.added = true;
-        setTimeout(() => {
-          existingItem.added = false;
-        }, 300);
-      } else {
-        const newItem = { ...item, quantity: 1, added: true };
-        this.cart.push(newItem);
-        setTimeout(() => {
-          newItem.added = false;
-        }, 300);
-      }
+      this.ADD_TO_CART(item);
     },
     removeFromCart(index) {
-      this.cart.splice(index, 1);
+      this.REMOVE_FROM_CART(index);
     },
     increaseQuantity(index) {
-      this.cart[index].quantity++;
+      this.INCREASE_QUANTITY(index);
     },
     decreaseQuantity(index) {
-      if (this.cart[index].quantity > 1) {
-        this.cart[index].quantity--;
-      } else {
-        this.removeFromCart(index);
-      }
-    },
-    cartTotal() {
-      let total = 0;
-      this.cart.forEach(item => {
-        const price = parseFloat(item.price);
-        const quantity = parseInt(item.quantity);
-        if (!isNaN(price) && !isNaN(quantity)) {
-          total += price * quantity;
-        }
-      });
-      console.log(`Total: ${total}`);
-      return total.toFixed(2);
+      this.DECREASE_QUANTITY(index);
     }
   }
 }
@@ -140,32 +128,6 @@ export default {
 
 .brand-logo img {
   max-height: 100px;
-}
-
-.games-search {
-  flex-grow: 1;
-  margin-left: 20px;
-  position: relative;
-}
-
-.form-search .nav-search-field {
-  width: 100%;
-  padding: 10px 50px 10px 10px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-sizing: border-box;
-}
-
-.form-search .btn-search {
-  position: absolute;
-  right: 10px;
-  top: 58%;
-  transform: translateY(-50%);
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  color: #CA6BE5;
-  font-size: 24px;
 }
 
 .menu-right {
@@ -258,18 +220,47 @@ export default {
 }
 
 .cart-table {
-  color: #CA6BE5;
-  width: 200px;
+  color: white;
+  width: 250px;
   text-align: center;
+  background-color: #030821;
+  font-weight: bold;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 .cart-items {
   display: flex;
   flex-direction: column;
+  border: 2px solid #ddd;
 }
 
 .cart-item {
   margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.cart-item-content {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px;
+  background-color: #030821;
+  border-radius: 5px;
+}
+
+.cart-item-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.cart-item-details {
+  flex: 1;
+  text-align: center;
 }
 
 .cart-item-added {
@@ -283,39 +274,83 @@ export default {
 }
 
 .btn-quantity {
-  background-color: #CA6BE5;
+  background-color: transparent;
   color: white;
-  border: none;
+  border: 1px solid #ddd;
   padding: 5px;
   margin: 0 5px;
   cursor: pointer;
   border-radius: 4px;
 }
 
-.btn-remove {
-  background-color: red;
+.btn-buy {
+  background-color: transparent;
+  color: #43ba5d;
+  border: 1px solid #43ba5d;
+  padding: 5px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-family: "Nunito", sans-serif;
+}
+
+.btn-buy:hover {
+  background-color: #43ba5d;
   color: white;
-  border: none;
+  transition: 300ms linear;
+}
+
+.btn-remove {
+  background-color: transparent;
+  color: red;
+  border: 1px solid red;
   padding: 5px 10px;
   margin-left: 10px;
   cursor: pointer;
   border-radius: 4px;
+  font-family: "Nunito", sans-serif;
+}
+
+.btn-remove:hover {
+  background-color: red;
+  color: white;
+  transition: 300ms linear;
 }
 
 .empty-cart {
-
   font-style: italic;
 }
 
 .cart-total {
   margin-top: 10px;
   font-weight: bold;
-  color: #CA6BE5;
+  color: white;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #030821;
+  border-radius: 5px;
+
 }
 
 .img-fluid:hover {
   filter: drop-shadow(1px 1px 20px white);
   transition: 300ms linear;
+}
+
+.preco {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.titulo {
+  font-size: 18px;
+  text-align: center;
+}
+
+.linha {
+  background-color: #d3d3d3;
+  width: 100%;
+  height: 2px;
 }
 
 @keyframes itemAdded {

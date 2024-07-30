@@ -5,12 +5,16 @@
                 <div class="col-12">
                     <div class="main-menu border-section border-top-0">
                         <div class="brand-logo">
-                            <router-link to="/inicio">
+                            <router-link to="/">
                                 <img src="/assets/GameverseLogo.png" class="img-fluid" alt="logo">
                             </router-link>
+                            <router-link to="/">
+                            </router-link>
                         </div>
-                        <router-link to="/menuen" class="navbar-item">English<router-link /></router-link>
                         <router-link to="/menu" class="navbar-item">Loja<router-link /></router-link>
+                    </div>
+                    <div class="fundo">
+                        <img src="/assets/fundo.jpg" class="img-fundo" alt="logo">
                     </div>
                 </div>
             </div>
@@ -22,7 +26,7 @@
 
 
 export default {
-    name: 'HomeVue'
+    name: 'InicioVue'
 }
 </script>
 
@@ -47,7 +51,7 @@ export default {
 }
 
 .navbar-item{
-    padding-right: 10px;
+    padding-left: 50px;
     text-decoration: none;
     color: #C1FF72;
     font-weight: bold;
@@ -56,5 +60,11 @@ export default {
 .img-fluid:hover {
   filter: drop-shadow(1px 1px 20px white);
   transition: 300ms linear;
+}
+
+.img-fundo{
+    width: 100%;
+    height: 500px;
+    
 }
 </style>

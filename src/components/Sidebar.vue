@@ -134,7 +134,7 @@ export default {
       this.$emit('apply-filters', filtersWithSearch);
     },
     search() {
-      this.applyFilters(); // Apply filters when submitting the search form
+      this.applyFilters(); 
     }
   }
 }
@@ -146,7 +146,7 @@ export default {
   padding: 20px;
   background-color: #030821;
   color: white;
-  border: 1px solid #ddd;
+  border: 2px solid #ddd;
   border-radius: 10px;
 }
 

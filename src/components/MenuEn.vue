@@ -283,7 +283,7 @@
   }
   
   .btn-quantity {
-    background-color: #CA6BE5;
+    background-color: transparent;
     color: white;
     border: none;
     padding: 5px;
