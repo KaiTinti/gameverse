@@ -191,7 +191,6 @@
   .card:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(255, 255, 255, 0.5);
-    transition: 200ms linear; 
   }
   
   .card-image {
@@ -214,7 +213,6 @@
     font-size: 1em;
     color: #666;
     margin: 0 0 10px;
-  
   }
   
   .card-price {
@@ -248,12 +246,25 @@
   
   .buy-button:hover {
     background-color: #B258D6;
-    transition: 200ms linear; 
   }
-  .linha{
+  
+  .linha {
     background-color: white;
     width: 265px;
     height: 2px;
   }
+  
+  .store-container:hover .card {
+    filter: grayscale(1);
+    transition: filter 0.3s ease-in-out;
+    transition: 0.3s ease-in-out;
+  }
+  
+  .store-container .card:hover {
+    filter: none;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.5);
+  }
   </style>
+  
   

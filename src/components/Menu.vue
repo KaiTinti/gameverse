@@ -5,7 +5,7 @@
         <div class="col-12">
           <div class="main-menu border-section border-top-0">
             <div class="brand-logo">
-              <router-link to="/">
+              <router-link to="/inicio">
                 <img src="/assets/GameverseLogo.png" class="img-fluid" alt="logo">
               </router-link>
             </div>
@@ -65,6 +65,18 @@
                   </li>
                 </ul>
               </div>
+              <!-- Adicionando o ícone aqui -->
+              <div class="upload-section">
+                <img ref="icon" class="icone" @click="toggleMenu" alt="icone">
+                <!-- Menu de upload e seleção de cor -->
+                <div v-if="showMenu" class="menu-dropdown">
+                  <form>
+                    <input type="file" name="file" id="file" @change="updateImage">
+                    <label for="file">Select a file...</label>
+                    <input type="color" id="colorPicker" @input="updateBorderColor">
+                  </form>
+                </div>
+              </div>
             </div>
           </div>
           <LojaVue @add-to-cart="addToCart" :search-query="searchQuery" />
@@ -85,7 +97,9 @@ export default {
   },
   data() {
     return {
-      searchQuery: ''
+      searchQuery: '',
+      showMenu: false,
+      image: null
     };
   },
   computed: {
@@ -105,11 +119,24 @@ export default {
     },
     decreaseQuantity(index) {
       this.DECREASE_QUANTITY(index);
+    },
+
+    toggleMenu() {
+      this.showMenu = !this.showMenu;
+    },
+    updateImage(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.image = URL.createObjectURL(file);
+        this.$refs.icon.src = this.image;
+      }
+    },
+    updateBorderColor(event) {
+      this.$refs.icon.style.borderColor = event.target.value;
     }
   }
 }
 </script>
-
 
 <style scoped>
 .container {
@@ -291,79 +318,62 @@ export default {
   margin: 0 5px;
   cursor: pointer;
   border-radius: 4px;
-  font-family: "Nunito", sans-serif;
-}
-
-.btn-buy:hover {
-  background-color: #43ba5d;
-  color: white;
-  transition: 300ms linear;
+  font-size: 15px;
 }
 
 .btn-remove {
   background-color: transparent;
   color: red;
   border: 1px solid red;
-  padding: 5px 10px;
-  margin-left: 10px;
+  padding: 5px;
+  margin: 0 5px;
   cursor: pointer;
   border-radius: 4px;
-  font-family: "Nunito", sans-serif;
-}
-
-.btn-remove:hover {
-  background-color: red;
-  color: white;
-  transition: 300ms linear;
 }
 
 .empty-cart {
-  font-style: italic;
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
 }
 
 .cart-total {
-  margin-top: 10px;
-  font-weight: bold;
-  color: white;
-  border-radius: 5px;
-  padding: 10px;
-  background-color: #030821;
-  border-radius: 5px;
-
-}
-
-.img-fluid:hover {
-  filter: drop-shadow(1px 1px 20px white);
-  transition: 300ms linear;
-}
-
-.preco {
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-
-.titulo {
-  font-size: 18px;
   text-align: center;
+  margin-top: 10px;
 }
 
-.linha {
-  background-color: #d3d3d3;
-  width: 100%;
-  height: 2px;
+.upload-section {
+  display: flex;
+  align-items: center;
+  margin-left: 400px;
 }
 
-@keyframes itemAdded {
-  0% {
-    transform: scale(1);
-  }
+.icone {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  background-color: transparent;
+  cursor: pointer;
+  object-fit: cover;
+  border: 2px solid white;
+  /* Default border color */
+}
 
-  50% {
-    transform: scale(1.2);
-  }
+.menu-dropdown {
+  position: absolute;
+  margin-top: 200px;
+  right: 50px;
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+}
 
-  100% {
-    transform: scale(1);
-  }
+.menu-dropdown input[type="file"],
+.menu-dropdown input[type="color"] {
+  display: block;
+  margin-bottom: 10px;
 }
 </style>

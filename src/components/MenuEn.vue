@@ -5,7 +5,7 @@
           <div class="col-12">
             <div class="main-menu border-section border-top-0">
               <div class="brand-logo">
-                <router-link to="/">
+                <router-link to="/inicio">
                   <img src="/assets/GameverseLogo.png" class="img-fluid" alt="logo">
                 </router-link>
               </div>
